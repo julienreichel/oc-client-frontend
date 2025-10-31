@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oc-client-frontend
+  namespace: oc-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oc-client-frontend
+  template:
+    metadata:
+      labels:
+        app: oc-client-frontend
+    spec:
+      containers:
+        - name: app
+          image: IMAGE_PLACEHOLDER
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oc-client-frontend
+  namespace: oc-client
+spec:
+  selector:
+    app: oc-client-frontend
+  ports:
+    - port: 80
+      targetPort: 80
