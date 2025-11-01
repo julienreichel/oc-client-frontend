@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oc-client-frontend
+  namespace: oc-client
+spec:
+  selector:
+    app: oc-client-frontend
+  ports:
+    - port: 80
+      targetPort: 80
