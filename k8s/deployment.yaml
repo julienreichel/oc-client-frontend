@@ -13,6 +13,8 @@ spec:
       labels:
         app: oc-client-frontend
     spec:
+      imagePullSecrets:
+        - name: ghcr-creds
       containers:
         - name: app
           image: IMAGE_PLACEHOLDER
