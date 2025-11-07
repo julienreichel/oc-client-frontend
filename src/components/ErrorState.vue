@@ -9,11 +9,12 @@
             :color="errorColor"
             size="4em"
             class="q-mb-md"
+            aria-label="Error indicator"
             data-cy="error-icon"
           />
 
           <!-- Error Message -->
-          <div class="text-h6 q-mb-md" data-cy="error-message">
+          <div class="text-h6 q-mb-md" role="alert" aria-label="Error message" data-cy="error-message">
             {{ errorMessage }}
           </div>
 
@@ -23,6 +24,7 @@
             :label="$t('document.retry')"
             icon="refresh"
             @click="$emit('retry')"
+            :aria-label="$t('document.retry')"
             data-cy="retry-button"
             class="q-mt-md"
           />

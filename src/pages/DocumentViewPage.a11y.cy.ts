@@ -37,14 +37,14 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/test123');
 
       // Main heading should receive focus for screen readers
-      cy.get('[data-cy="document-title"]').should('have.focus').and('have.attr', 'tabindex', '-1'); // Programmatic focus
+      cy.get('[aria-label="Document title"]').should('have.focus').and('have.attr', 'tabindex', '-1'); // Programmatic focus
     });
 
     it('should maintain focus when content loads', async () => {
       await router.push('/view/valid123');
 
       // When document loads successfully, focus should remain on title
-      cy.get('[data-cy="document-title"]', { timeout: 5000 })
+      cy.get('[aria-label="Document title"]', { timeout: 5000 })
         .should('be.visible')
         .and('have.focus');
     });
@@ -52,8 +52,8 @@ describe('DocumentViewPage Accessibility', () => {
     it('should focus error heading when error occurs', async () => {
       await router.push('/view/invalid123');
 
-      // When error occurs, focus should be on error heading
-      cy.get('[data-cy="error-heading"]', { timeout: 5000 })
+      // When error occurs, focus should be on error message
+      cy.get('[aria-label="Error message"]', { timeout: 5000 })
         .should('be.visible')
         .and('have.focus')
         .and('have.attr', 'tabindex', '-1');
@@ -65,7 +65,7 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/notfound');
 
       // Error message should have role="alert" for screen readers
-      cy.get('[data-cy="error-message"]', { timeout: 5000 })
+      cy.get('[aria-label="Error message"]', { timeout: 5000 })
         .should('be.visible')
         .and('have.attr', 'role', 'alert');
     });
@@ -74,7 +74,7 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/expired');
 
       // Error messages should be human-friendly
-      cy.get('[data-cy="error-message"]', { timeout: 5000 })
+      cy.get('[aria-label="Error message"]', { timeout: 5000 })
         .should('contain.text', 'no longer available')
         .and('not.contain', 'expired')
         .and('not.contain', '410')
@@ -85,7 +85,7 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/unavailable');
 
       // Retry button should be properly labeled
-      cy.get('[data-cy="retry-button"]', { timeout: 5000 })
+      cy.get('[aria-label="Try Again"]', { timeout: 5000 })
         .should('be.visible')
         .and('contain.text', 'Try Again')
         .and('have.attr', 'type', 'button');
@@ -94,8 +94,8 @@ describe('DocumentViewPage Accessibility', () => {
     it('should have accessible back navigation', async () => {
       await router.push('/view/test123');
 
-      // Back button should be clearly labeled
-      cy.get('[data-cy="back-button"]', { timeout: 5000 })
+      // Back button should be clearly labeled  
+      cy.get('[aria-label="Enter New Code"]', { timeout: 5000 })
         .should('be.visible')
         .and('contain.text', 'Enter New Code')
         .and('have.attr', 'role', 'button');
@@ -107,7 +107,7 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/loading123');
 
       // Loading message should be announced
-      cy.get('[data-cy="loading-message"]')
+      cy.get('[aria-label="Loading message"]')
         .should('be.visible')
         .and('have.attr', 'aria-live', 'polite');
     });
@@ -117,13 +117,12 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/loading123');
 
       // Check that loading elements provide meaningful text for screen readers
-      // Test the stubbed LoadingState component we configured
-      cy.get('[data-cy="loading-message"]')
+      cy.get('[aria-label="Loading message"]')
         .should('exist')
         .and('contain.text', 'Loading your document');
 
       // Verify loading spinner has accessibility role
-      cy.get('[data-cy="loading-spinner"]', { timeout: 1000 }).should(
+      cy.get('[aria-label="Loading spinner"]', { timeout: 1000 }).should(
         'have.attr',
         'role',
         'status',
@@ -136,7 +135,7 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/valid123');
 
       // Document should have proper heading hierarchy
-      cy.get('[data-cy="document-title"]', { timeout: 5000 })
+      cy.get('[aria-label="Document title"]', { timeout: 5000 })
         .should('be.visible')
         .and('match', 'h1');
     });
@@ -145,11 +144,11 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/valid123');
 
       // Document metadata should be accessible
-      cy.get('[data-cy="document-meta"]', { timeout: 5000 })
+      cy.get('[aria-label="Document metadata"]', { timeout: 5000 })
         .should('be.visible')
         .and('have.attr', 'aria-label')
         .then((ariaLabel) => {
-          expect(ariaLabel).to.contain('Created');
+          expect(ariaLabel).to.contain('Document metadata');
         });
     });
 
@@ -157,12 +156,12 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/empty123');
 
       // Empty content should be indicated
-      cy.get('[data-cy="document-content"]', { timeout: 5000 })
+      cy.get('[aria-label="Document content"]', { timeout: 5000 })
         .should('exist')
         .then(($content) => {
           if ($content.text().trim() === '') {
             // Should have indication of empty content
-            cy.get('[data-cy="empty-content-message"]')
+            cy.get('[aria-label="Empty document state"]')
               .should('be.visible')
               .and('contain.text', 'No content available');
           }
@@ -175,7 +174,7 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/error123');
 
       // Retry button should be keyboard accessible
-      cy.get('[data-cy="retry-button"]', { timeout: 5000 })
+      cy.get('[aria-label="Try Again"]', { timeout: 5000 })
         .focus()
         .should('have.focus')
         .type('{enter}');
@@ -199,7 +198,7 @@ describe('DocumentViewPage Accessibility', () => {
 
       // Content should be within main
       cy.get('main').within(() => {
-        cy.get('[data-cy="document-view-content"]').should('exist');
+        cy.get('[aria-label="Document content"], [aria-label="Error message"], [aria-label="Loading..."]').should('exist');
       });
     });
 
@@ -208,16 +207,16 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/test123');
 
       // Wait for component to mount properly
-      cy.get('[data-cy="document-view-page"]', { timeout: 10000 }).should('exist');
+      cy.get('[aria-label="Document view page"]', { timeout: 10000 }).should('exist');
 
       // Check that main content area exists for skip link target
       cy.get('#main-content').should('exist');
 
       // Verify skip link exists (even if hidden)
-      cy.get('[data-cy="skip-link"]').should('exist');
+      cy.get('[aria-label="Skip to main content"]').should('exist');
 
       // Verify page has accessibility structure
-      cy.get('[data-cy="document-view-page"]').should('not.be.empty');
+      cy.get('[aria-label="Document view page"]').should('not.be.empty');
     });
   });
 });

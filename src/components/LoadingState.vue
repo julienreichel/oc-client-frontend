@@ -3,10 +3,10 @@
     <div class="row justify-center q-my-xl">
       <div class="col-auto text-center">
         <!-- Loading Spinner -->
-        <q-spinner-dots color="primary" size="3em" data-cy="loading-spinner" />
+        <q-spinner-dots color="primary" size="3em" role="status" aria-label="Loading spinner" data-cy="loading-spinner" />
 
         <!-- Loading Text -->
-        <div class="q-mt-md text-body2 text-grey-6" data-cy="loading-text">
+        <div class="q-mt-md text-body2 text-grey-6" aria-label="Loading message" role="status" data-cy="loading-text">
           {{ $t('document.loading') }}
         </div>
       </div>
