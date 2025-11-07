@@ -19,11 +19,6 @@ describe('DocumentViewPage Accessibility', () => {
     cy.mount(DocumentViewPage, {
       global: {
         plugins: [router, i18n],
-        stubs: {
-          LoadingState: { template: '<div data-cy="loading-message">Loading your document</div>' },
-          ErrorState: { template: '<div data-cy="error-state">Error</div>' },
-          DocumentViewer: { template: '<div data-cy="document-viewer">Document</div>' },
-        },
       },
     });
   });
