@@ -81,6 +81,22 @@ export default defineConfigWithVueTs(
   },
 
   {
+    files: ['cypress/**/*.{js,jsx,ts,tsx}', '**/*.cy.{js,jsx,ts,tsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        cy: 'readonly',
+        Cypress: 'readonly',
+      },
+    },
+    rules: {
+      // Cypress-specific rules
+      'no-unused-expressions': 'off',
+      'no-undef': 'off', // Cypress globals are handled above
+    },
+  },
+
+  {
     files: ['src-pwa/custom-service-worker.ts'],
     languageOptions: {
       globals: {
