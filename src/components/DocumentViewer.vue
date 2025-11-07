@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import type { PublicDocument } from '../models/PublicDocument';
+import type { PublicDocument } from 'src/models/PublicDocument';
 
 interface Props {
   document: PublicDocument;

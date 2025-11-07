@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import type { ApiError } from '../models/ApiError';
+import type { ApiError } from 'src/models/ApiError';
 
 interface Props {
   error: ApiError;

@@ -73,20 +73,9 @@
 import { onMounted, ref, computed, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import { useDocumentByCode } from 'src/composables/useDocumentByCode';
-
-// Import components (assuming they exist or will be created)
-// For now, we'll create placeholder components inline
-const DocumentViewer = { template: '<div>Document content here</div>' };
-const LoadingState = { template: '<div><q-spinner size="3rem" /> Loading...</div>' };
-const ErrorState = {
-  template: `<div class="text-center q-pa-lg">
-    <q-icon name="error" size="3rem" color="negative" />
-    <h2 class="text-h6 q-mt-md">{{ error?.message || 'An error occurred' }}</h2>
-    <q-btn @click="$emit('retry')" color="primary" label="Try Again" class="q-mt-md" />
-  </div>`,
-  props: ['error'],
-  emits: ['retry'],
-};
+import DocumentViewer from 'src/components/DocumentViewer.vue';
+import LoadingState from 'src/components/LoadingState.vue';
+import ErrorState from 'src/components/ErrorState.vue';
 
 const route = useRoute();
 const { state, load, reload } = useDocumentByCode();
