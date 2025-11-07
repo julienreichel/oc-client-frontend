@@ -29,7 +29,7 @@ describe('i18n configuration', () => {
 
   it('should resolve document.loading translation key', () => {
     const translation = i18n.global.t('document.loading');
-    expect(translation).toBe('Loading document...');
+    expect(translation).toBe('Loading your document');
   });
 
   it('should resolve document.backToHome translation key', () => {

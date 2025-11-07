@@ -18,19 +18,19 @@ import { HttpDocumentProvider } from './HttpDocumentProvider';
  */
 const shouldUseMockProvider = (): boolean => {
   // Explicit override via environment variable
-  if (process.env.VUE_APP_USE_MOCK_PROVIDER === 'true') {
+  if (process.env?.VUE_APP_USE_MOCK_PROVIDER === 'true') {
     return true;
   }
 
   // Force HTTP provider via environment variable
-  if (process.env.VUE_APP_USE_MOCK_PROVIDER === 'false') {
+  if (process.env?.VUE_APP_USE_MOCK_PROVIDER === 'false') {
     return false;
   }
 
   // In browser environment, check hostname
   if (typeof window !== 'undefined' && window.location) {
     const { hostname, port } = window.location;
-    
+
     // Use mock for localhost with port numbers (e.g., localhost:9000, localhost:3000)
     // But allow HTTP for custom local domains (e.g., client.localhost)
     if (hostname === 'localhost' && port) {

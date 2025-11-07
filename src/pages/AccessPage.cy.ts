@@ -5,7 +5,7 @@ describe('AccessPage', () => {
     cy.mount(AccessPage);
 
     // Check form input is present
-    cy.get('[data-cy="access-input-field"]').should('exist');
+    cy.get('[data-cy="access-code-input"]').should('exist');
 
     // Check submit button is present
     cy.get('[data-cy="submit-button"]').should('exist');

@@ -19,22 +19,40 @@ export default {
     label: 'Access Code',
     placeholder: 'Enter your access code',
     submit: 'View Document',
+    instructions: 'Enter the access code you received to view your document.',
     validation: {
-      required: 'Access code is required',
+      required: 'Please enter an access code',
     },
   },
 
   // Document viewing
   document: {
-    loading: 'Loading document...',
+    title: 'Document:',
+    loading: 'Loading your document',
     error: {
-      notFound: 'Document not found. Please check your access code.',
-      expired: 'This document has expired and is no longer available.',
-      unavailable: 'Document is currently unavailable. Please try again later.',
+      notFound: "We couldn't find a document with this code. Please check the code and try again.",
+      expired: 'This link is no longer available.',
+      unavailable: 'The document is temporarily unavailable. Please try again in a moment.',
+      invalid: 'Please check the code and try again.',
+      unknown: 'Something went wrong. Please try again.',
     },
     retry: 'Try Again',
     createdAt: 'Created on {date}',
     backToHome: 'Enter New Code',
+    empty: 'No content available for this document.',
+  },
+
+  // Meta information
+  meta: {
+    title: 'Document Viewer',
+    description: 'View shared documents securely',
+  },
+
+  // Accessibility labels and instructions
+  a11y: {
+    skipToMain: 'Skip to main content',
+    loading: 'Loading...',
+    errorRegion: 'Error message',
   },
 
   // 404 Not Found page

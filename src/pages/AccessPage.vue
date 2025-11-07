@@ -1,33 +1,79 @@
 <template>
   <q-page padding>
+    <!-- Skip link for screen readers -->
+    <a href="#main-content" class="sr-only sr-only-focusable" data-cy="skip-link">
+      {{ $t('a11y.skipToMain') }}
+    </a>
+
     <div class="row justify-center">
       <div class="col-12 col-sm-8 col-md-6 col-lg-4">
         <q-card class="q-pa-lg">
           <q-card-section>
-            <div class="text-h5 text-center q-mb-lg">
-              {{ $t('access.title') }}
-            </div>
+            <main id="main-content" role="main">
+              <h1 class="text-h5 text-center q-mb-md">
+                {{ $t('access.title') }}
+              </h1>
 
-            <form @submit.prevent="handleSubmit">
-              <AccessInput
-                v-model="form.code.value"
-                :label="$t('access.label')"
-                :placeholder="$t('access.placeholder')"
-                :show-error="!form.isValid.value && form.isValidated.value"
-                :error-message="$t('access.validation.required')"
-                class="q-mb-md"
-              />
+              <p class="text-body2 text-center text-grey-7 q-mb-lg">
+                {{ $t('access.instructions') }}
+              </p>
 
-              <div class="row justify-center">
-                <q-btn
-                  type="submit"
-                  color="primary"
-                  :label="$t('access.submit')"
-                  class="q-px-xl"
-                  data-cy="submit-button"
-                />
-              </div>
-            </form>
+              <form @submit.prevent="handleSubmit" aria-label="Document Access Form" novalidate>
+                <div class="q-mb-md">
+                  <label
+                    :for="inputId"
+                    class="text-body2 q-mb-sm block"
+                    :class="{ 'text-negative': showError }"
+                  >
+                    {{ $t('access.label') }}
+                    <span aria-hidden="true">*</span>
+                  </label>
+
+                  <q-input
+                    :id="inputId"
+                    v-model="form.code.value"
+                    :placeholder="$t('access.placeholder')"
+                    :error="showError"
+                    :error-message="showError ? $t('access.validation.required') : undefined"
+                    :aria-describedby="showError ? errorId : instructionId"
+                    :aria-invalid="showError"
+                    aria-required="true"
+                    outlined
+                    class="q-mb-sm"
+                    data-cy="access-code-input"
+                    @keydown.enter="handleSubmit"
+                  />
+
+                  <!-- Instructions for screen readers -->
+                  <div :id="instructionId" class="sr-only" aria-live="polite">
+                    {{ $t('access.instructions') }}
+                  </div>
+
+                  <!-- Error message with proper ARIA -->
+                  <div
+                    v-if="showError"
+                    :id="errorId"
+                    class="text-negative text-caption q-mt-xs"
+                    role="alert"
+                    aria-live="assertive"
+                    data-cy="error-message"
+                  >
+                    {{ $t('access.validation.required') }}
+                  </div>
+                </div>
+
+                <div class="row justify-center">
+                  <q-btn
+                    type="submit"
+                    color="primary"
+                    :label="$t('access.submit')"
+                    :aria-describedby="showError ? errorId : instructionId"
+                    class="q-px-xl"
+                    data-cy="submit-button"
+                  />
+                </div>
+              </form>
+            </main>
           </q-card-section>
         </q-card>
       </div>
@@ -36,12 +82,29 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import AccessInput from 'src/components/AccessInput.vue';
 import { useAccessCodeForm } from '../composables/useAccessCodeForm';
 
 const router = useRouter();
 const form = useAccessCodeForm();
+
+// Generate unique IDs for accessibility
+const inputId = ref(`access-code-${Date.now()}`);
+const errorId = ref(`access-error-${Date.now()}`);
+const instructionId = ref(`access-instruction-${Date.now()}`);
+
+// Computed property for error display
+const showError = computed(() => !form.isValid.value && form.isValidated.value);
+
+// Focus management
+onMounted(() => {
+  // Focus the input when the page loads for better UX
+  const inputElement = document.getElementById(inputId.value);
+  if (inputElement) {
+    inputElement.focus();
+  }
+});
 
 /**
  * Handles form submission
@@ -58,4 +121,38 @@ function handleSubmit(): void {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+/* Screen reader only content */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Show skip link when focused */
+.sr-only-focusable:focus {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0.5rem 1rem !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+  background-color: var(--q-primary) !important;
+  color: white !important;
+  text-decoration: none !important;
+  z-index: 1000 !important;
+}
+
+/* Block display for label */
+.block {
+  display: block;
+}
+</style>
