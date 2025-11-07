@@ -16,15 +16,15 @@ describe('Router Routes', () => {
     expect(mainLayout?.children).toBeDefined();
   });
 
-  it('should define home route', () => {
+  it('should define access route', () => {
     const mainLayout = routes[0];
     expect(mainLayout).toBeDefined();
 
     if (mainLayout?.children) {
-      const homeRoute = mainLayout.children.find((route: RouteRecordRaw) => route.path === '');
-      expect(homeRoute).toBeDefined();
-      expect(homeRoute?.name).toBe('home');
-      expect(homeRoute?.component).toBeDefined();
+      const accessRoute = mainLayout.children.find((route: RouteRecordRaw) => route.path === '');
+      expect(accessRoute).toBeDefined();
+      expect(accessRoute?.name).toBe('access');
+      expect(accessRoute?.component).toBeDefined();
     }
   });
 
@@ -56,7 +56,7 @@ describe('Router Routes', () => {
 
     if (mainLayout?.children) {
       const childRouteNames = mainLayout.children.map((route: RouteRecordRaw) => route.name);
-      expect(childRouteNames).toContain('home');
+      expect(childRouteNames).toContain('access');
       expect(childRouteNames).toContain('document-view');
     }
 

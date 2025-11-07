@@ -13,6 +13,17 @@ export default {
     title: 'Client Portal',
   },
 
+  // Access page
+  access: {
+    title: 'Enter Access Code',
+    label: 'Access Code',
+    placeholder: 'Enter your access code',
+    submit: 'View Document',
+    validation: {
+      required: 'Access code is required',
+    },
+  },
+
   // 404 Not Found page
   notFound: {
     title: 'Page Not Found',
