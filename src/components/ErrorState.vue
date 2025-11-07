@@ -10,16 +10,10 @@
             size="4em"
             class="q-mb-md"
             :aria-label="$t('a11y.errorIndicator')"
-            data-cy="error-icon"
           />
 
           <!-- Error Message -->
-          <div
-            class="text-h6 q-mb-md"
-            role="alert"
-            :aria-label="$t('a11y.errorMessage')"
-            data-cy="error-message"
-          >
+          <div class="text-h6 q-mb-md" role="alert" :aria-label="$t('a11y.errorMessage')">
             {{ errorMessage }}
           </div>
 
@@ -30,7 +24,6 @@
             icon="refresh"
             @click="$emit('retry')"
             :aria-label="$t('document.retry')"
-            data-cy="retry-button"
             class="q-mt-md"
           />
         </q-card>

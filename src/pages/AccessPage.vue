@@ -1,12 +1,7 @@
 <template>
-  <q-page padding :aria-label="$t('a11y.accessPage')" data-cy="access-page">
+  <q-page padding :aria-label="$t('a11y.accessPage')">
     <!-- Skip link for screen readers -->
-    <a
-      href="#main-content"
-      class="sr-only sr-only-focusable"
-      :aria-label="$t('a11y.skipToMain')"
-      data-cy="skip-link"
-    >
+    <a href="#main-content" class="sr-only sr-only-focusable" :aria-label="$t('a11y.skipToMain')">
       {{ $t('a11y.skipToMain') }}
     </a>
 
@@ -46,7 +41,6 @@
                     aria-required="true"
                     outlined
                     class="q-mb-sm"
-                    data-cy="access-code-input"
                     @keydown.enter="handleSubmit"
                   />
 
@@ -63,7 +57,6 @@
                     role="alert"
                     aria-live="assertive"
                     :aria-label="$t('a11y.accessInputError')"
-                    data-cy="error-message"
                   >
                     {{ $t('access.validation.required') }}
                   </div>
@@ -77,7 +70,6 @@
                     :aria-label="$t('a11y.accessSubmitButton')"
                     :aria-describedby="showError ? errorId : instructionId"
                     class="q-px-xl"
-                    data-cy="submit-button"
                   />
                 </div>
               </form>

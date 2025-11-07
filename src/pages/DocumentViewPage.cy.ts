@@ -74,7 +74,7 @@ describe('DocumentViewPage', () => {
     });
 
     // Since Quasar rendering is problematic in tests, just verify the element
-    // structure and data attributes are correct
-    DocumentViewPageGetters.getBackToHomeButton().should('have.attr', 'data-cy', 'back-to-home');
+    // structure and accessibility attributes are correct
+    DocumentViewPageGetters.getBackToHomeButton().should('have.attr', 'label', 'Enter New Code');
   });
 });

@@ -2,15 +2,11 @@
   <div class="document-viewer">
     <!-- Document Header -->
     <div class="document-header q-mb-lg">
-      <h1 class="text-h4 q-mb-md" :aria-label="$t('a11y.documentTitle')" data-cy="document-title">
+      <h1 class="text-h4 q-mb-md" :aria-label="$t('a11y.documentTitle')">
         {{ document.title }}
       </h1>
 
-      <div
-        class="text-caption text-grey-6"
-        :aria-label="$t('a11y.documentMetadata')"
-        data-cy="document-created-at"
-      >
+      <div class="text-caption text-grey-6" :aria-label="$t('a11y.documentMetadata')">
         {{ formattedCreatedAt }}
       </div>
     </div>
@@ -19,12 +15,9 @@
     <div class="document-content">
       <q-card flat class="q-pa-lg">
         <q-card-section>
-          <pre
-            class="document-text"
-            :aria-label="$t('a11y.documentContent')"
-            data-cy="document-content"
-            >{{ document.content }}</pre
-          >
+          <pre class="document-text" :aria-label="$t('a11y.documentContent')">{{
+            document.content
+          }}</pre>
         </q-card-section>
       </q-card>
     </div>

@@ -8,7 +8,6 @@
           size="3em"
           role="status"
           :aria-label="$t('a11y.loadingSpinner')"
-          data-cy="loading-spinner"
         />
 
         <!-- Loading Text -->
@@ -16,7 +15,6 @@
           class="q-mt-md text-body2 text-grey-6"
           :aria-label="$t('a11y.loadingMessage')"
           role="status"
-          data-cy="loading-text"
         >
           {{ $t('document.loading') }}
         </div>

@@ -1,16 +1,7 @@
 <template>
-  <q-page
-    :aria-label="$t('a11y.documentViewPage')"
-    data-cy="document-view-page"
-    class="flex flex-center"
-  >
+  <q-page :aria-label="$t('a11y.documentViewPage')" class="flex flex-center">
     <!-- Skip link for screen readers -->
-    <a
-      href="#main-content"
-      class="sr-only sr-only-focusable"
-      :aria-label="$t('a11y.skipToMain')"
-      data-cy="skip-link"
-    >
+    <a href="#main-content" class="sr-only sr-only-focusable" :aria-label="$t('a11y.skipToMain')">
       {{ $t('a11y.skipToMain') }}
     </a>
 
@@ -24,19 +15,13 @@
           icon="arrow_back"
           :label="$t('document.backToHome')"
           :aria-label="$t('document.backToHome')"
-          data-cy="back-to-home"
           class="q-mb-md"
         />
       </nav>
 
       <main id="main-content" role="main">
         <!-- Loading State -->
-        <div
-          v-if="state.loading.value"
-          role="status"
-          :aria-label="$t('a11y.loading')"
-          data-cy="loading-spinner"
-        >
+        <div v-if="state.loading.value" role="status" :aria-label="$t('a11y.loading')">
           <LoadingState />
         </div>
 
@@ -46,18 +31,13 @@
           role="alert"
           :aria-live="announcementMode"
           :aria-label="$t('a11y.errorRegion')"
-          data-cy="error-state"
         >
           <h1 class="sr-only">{{ $t('a11y.errorRegion') }}</h1>
           <ErrorState :error="state.error.value" @retry="handleRetry" />
         </div>
 
         <!-- Success State -->
-        <div
-          v-else-if="state.data.value"
-          :aria-label="$t('a11y.documentContent')"
-          data-cy="document-viewer"
-        >
+        <div v-else-if="state.data.value" :aria-label="$t('a11y.documentContent')">
           <h1 :id="documentTitleId" class="sr-only">
             {{ $t('document.title') }} {{ state.data.value.title || 'Document' }}
           </h1>
@@ -70,7 +50,6 @@
           role="status"
           :aria-live="announcementMode"
           :aria-label="$t('a11y.emptyDocumentState')"
-          data-cy="empty-state"
         >
           <div class="text-center q-py-xl">
             <q-icon name="description" size="4rem" color="grey-5" />
