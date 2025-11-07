@@ -33,8 +33,10 @@ quasar build
 npm run lint
 npm run format
 
-# No tests configured yet
-npm test  # Currently exits 0
+# Testing (fully configured)
+npm test              # Run both unit and component tests
+npm run test:unit     # Vitest unit tests only
+npm run test:component # Cypress component tests only
 ```
 
 ### Build & Deployment
@@ -64,7 +66,9 @@ npm test  # Currently exits 0
 - **Mandatory**: All user-facing text must use Vue I18n (configured via `@intlify/unplugin-vue-i18n`)
 - **Structure**: Translation keys by context (e.g., `document.send.success`)
 - **Languages**: English (default), French/German planned
-- **No hardcoded strings** in templates allowed
+- **No hardcoded strings** in templates or `aria-label` attributes allowed
+- **Accessibility**: All `aria-label` attributes MUST use `$t('a11y.key')` for proper internationalization
+- **Example**: `:aria-label="$t('a11y.documentTitle')"` instead of `aria-label="Document title"`
 
 ## Integration Points
 
@@ -136,6 +140,26 @@ git push && git push --tags
 - **E2E Tests**: Cypress for full application workflows (future consideration)
 - **Test Commands**: `npm test` (runs both unit and component), `npm run test:unit`, `npm run test:component`
 - **Component Test Pattern**: Follow `MainLayout.cy.ts` example using `cy.mount()` for component testing
+
+#### **Accessibility-First Testing (MANDATORY)**
+
+**Use `aria-label` selectors as primary testing strategy:**
+
+```typescript
+// ✅ Preferred: Test what screen readers use
+cy.get('[aria-label="Document title"]').should('be.visible');
+cy.get('[aria-label="Try Again"]').click();
+
+// ❌ Avoid: Test-specific attributes
+cy.get('[data-cy="retry-button"]'); // Only as backup when necessary
+```
+
+**Requirements for ALL components:**
+
+- Interactive elements MUST have internationalized `aria-label` using `$t('a11y.key')`
+- Create dedicated `*.a11y.cy.ts` files for accessibility testing
+- Test focus management, screen reader announcements, keyboard navigation
+- Ensure WCAG compliance through semantic testing approach
 
 ## Key Implementation Notes
 

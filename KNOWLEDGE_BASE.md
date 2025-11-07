@@ -207,6 +207,9 @@ The application uses a **dual testing approach** combining unit and component te
 - **Files**: `*.cy.ts` files in the same directory as components
 - **Pattern**: Use `cy.mount()` following `MainLayout.cy.ts` example
 - **Benefits**: Real browser environment, Quasar CSS/JS, full integration testing
+- **Selector Strategy**: Use `aria-label` selectors for accessibility-first testing
+  - **Primary**: `cy.get('[aria-label="Button text"]')` - tests what screen readers use
+  - **Benefits**: Dual purpose (accessibility + testing), cleaner code, real-world validation
 
 ### Test Commands
 
@@ -220,6 +223,57 @@ npm run test:component # Cypress component tests only
 
 - **Unit Tests**: Logic validation, router configuration, i18n setup, utility functions
 - **Component Tests**: UI behavior, user interactions, component integration with Quasar
+
+### Testing Best Practices
+
+#### Accessibility-First Testing
+
+**Use `aria-label` selectors as the primary testing strategy:**
+
+```typescript
+// ✅ Preferred: Test what screen readers use
+cy.get('[aria-label="Document title"]').should('be.visible');
+cy.get('[aria-label="Try Again"]').click();
+cy.get('[aria-label="Loading message"]').should('contain', 'Loading');
+
+// ❌ Avoid: Test-specific pollution
+cy.get('[data-cy="document-title"]'); // Only as backup
+```
+
+**Benefits:**
+
+- **Dual Purpose**: `aria-label` serves both accessibility AND testing
+- **Real-World Validation**: Tests what screen readers actually use
+- **Cleaner Code**: No test-specific attributes cluttering production code
+- **Quality Assurance**: Ensures accessibility is built-in, not retrofitted
+
+**Implementation Requirements:**
+
+- All interactive elements MUST have internationalized `aria-label` attributes
+- Use `$t('a11y.buttonName')` for all aria-labels to support multiple languages
+- Maintain `data-cy` attributes only for complex cases or backward compatibility
+
+#### Accessibility Test Files
+
+Create dedicated `*.a11y.cy.ts` files for comprehensive accessibility testing:
+
+```typescript
+// DocumentViewPage.a11y.cy.ts example structure
+describe('DocumentViewPage Accessibility', () => {
+  describe('focus management', () => {
+    it('should place focus on main heading after navigation', () => {
+      cy.get('[aria-label="Document title"]').should('have.focus');
+    });
+  });
+
+  describe('screen reader support', () => {
+    it('should have proper landmark structure', () => {
+      cy.get('main[role="main"]').should('exist');
+      cy.get('[aria-label="Skip to main content"]').should('exist');
+    });
+  });
+});
+```
 
 ---
 

@@ -1,5 +1,9 @@
 <template>
-  <q-page :aria-label="$t('a11y.documentViewPage')" data-cy="document-view-page" class="flex flex-center">
+  <q-page
+    :aria-label="$t('a11y.documentViewPage')"
+    data-cy="document-view-page"
+    class="flex flex-center"
+  >
     <!-- Skip link for screen readers -->
     <a
       href="#main-content"
@@ -49,7 +53,11 @@
         </div>
 
         <!-- Success State -->
-        <div v-else-if="state.data.value" :aria-label="$t('a11y.documentContent')" data-cy="document-viewer">
+        <div
+          v-else-if="state.data.value"
+          :aria-label="$t('a11y.documentContent')"
+          data-cy="document-viewer"
+        >
           <h1 :id="documentTitleId" class="sr-only">
             {{ $t('document.title') }} {{ state.data.value.title || 'Document' }}
           </h1>

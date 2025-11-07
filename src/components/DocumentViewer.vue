@@ -19,9 +19,12 @@
     <div class="document-content">
       <q-card flat class="q-pa-lg">
         <q-card-section>
-          <pre class="document-text" :aria-label="$t('a11y.documentContent')" data-cy="document-content">{{
-            document.content
-          }}</pre>
+          <pre
+            class="document-text"
+            :aria-label="$t('a11y.documentContent')"
+            data-cy="document-content"
+            >{{ document.content }}</pre
+          >
         </q-card-section>
       </q-card>
     </div>
