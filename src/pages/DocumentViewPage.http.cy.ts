@@ -1,6 +1,10 @@
 import DocumentViewPage from './DocumentViewPage.vue';
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { i18n } from 'src/i18n';
+import {
+  getDocumentViewPage,
+  getBackToHomeButton
+} from './DocumentViewPage.getters';
 
 const routes = [
   { path: '/', name: 'access', component: { template: '<div>Access</div>' } },
@@ -34,7 +38,7 @@ describe('DocumentViewPage HTTP Integration', () => {
       await router.push('/view/HTTP123');
 
       // Verify component structure exists
-      cy.get('[data-cy="document-view-page"]').should('exist');
+      getDocumentViewPage().should('exist');
     });
 
     it('should handle HTTP provider lifecycle', async () => {
@@ -55,11 +59,11 @@ describe('DocumentViewPage HTTP Integration', () => {
       // Test that component can handle different states
       // Since we're using the real HTTP provider, we'll get an error state
       // which is expected behavior
-      cy.get('[data-cy="document-view-page"]').should('exist');
+      getDocumentViewPage().should('exist');
 
       // The component should handle the HTTP provider's response (success or error)
       // without crashing
-      cy.get('[data-cy="document-view-page"]').should('not.be.empty');
+      getDocumentViewPage().should('not.be.empty');
     });
 
     it('should maintain proper component structure with HTTP integration', () => {
@@ -77,9 +81,9 @@ describe('DocumentViewPage HTTP Integration', () => {
         await router.push('/view/INTEGRATION123');
 
         // Verify the component can be mounted and has the required structure
-        cy.get('[data-cy="document-view-page"]').should('exist');
+        getDocumentViewPage().should('exist');
         cy.get('nav[aria-label="Document navigation"]').should('exist');
-        cy.get('[data-cy="back-to-home"]').should('exist');
+        getBackToHomeButton().should('exist');
       });
     });
   });
