@@ -1,23 +1,13 @@
 import { createI18n } from 'vue-i18n';
+import enUS from './en-US';
 
 const messages = {
-  en: {
-    app: {
-      title: 'Document Viewer',
-    },
-    common: {
-      loading: 'Loading...',
-      retry: 'Retry',
-      error: {
-        generic: 'An error occurred. Please try again.',
-      },
-    },
-  },
+  'en-US': enUS,
 };
 
 export const i18n = createI18n({
-  locale: 'en',
-  fallbackLocale: 'en',
+  locale: 'en-US',
+  fallbackLocale: 'en-US',
   messages,
 });
 

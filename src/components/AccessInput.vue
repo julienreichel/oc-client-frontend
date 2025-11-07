@@ -36,16 +36,18 @@ interface Props {
   modelValue: string;
   label: string;
   placeholder: string;
-  showError: boolean;
-  errorMessage: string;
+  showError?: boolean;
+  errorMessage?: string;
 }
 
-interface Emits {
-  (event: 'update:modelValue', value: string): void;
-}
+withDefaults(defineProps<Props>(), {
+  showError: false,
+  errorMessage: '',
+});
 
-defineProps<Props>();
-defineEmits<Emits>();
+defineEmits<{
+  'update:modelValue': [value: string];
+}>();
 </script>
 
 <style scoped>

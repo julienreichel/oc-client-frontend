@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import AccessInput from '../components/AccessInput.vue';
+import AccessInput from 'src/components/AccessInput.vue';
 import { useAccessCodeForm } from '../composables/useAccessCodeForm';
 
 const router = useRouter();
@@ -58,10 +58,4 @@ function handleSubmit(): void {
 }
 </script>
 
-<style scoped>
-.q-page {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-}
-</style>
+<style scoped></style>

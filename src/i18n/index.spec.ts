@@ -8,8 +8,8 @@ describe('i18n configuration', () => {
   });
 
   it('should have correct locale configuration', () => {
-    expect(i18n.global.locale).toBe('en');
-    expect(i18n.global.fallbackLocale).toBe('en');
+    expect(i18n.global.locale).toBe('en-US');
+    expect(i18n.global.fallbackLocale).toBe('en-US');
   });
 
   it('should resolve app.title translation key', () => {
@@ -17,19 +17,19 @@ describe('i18n configuration', () => {
     expect(translation).toBe('Document Viewer');
   });
 
-  it('should resolve common.loading translation key', () => {
-    const translation = i18n.global.t('common.loading');
-    expect(translation).toBe('Loading...');
+  it('should resolve layout.title translation key', () => {
+    const translation = i18n.global.t('layout.title');
+    expect(translation).toBe('Client Portal');
   });
 
-  it('should resolve common.error.generic translation key', () => {
-    const translation = i18n.global.t('common.error.generic');
-    expect(translation).toBe('An error occurred. Please try again.');
+  it('should resolve access.title translation key', () => {
+    const translation = i18n.global.t('access.title');
+    expect(translation).toBe('Enter Access Code');
   });
 
-  it('should resolve common.retry translation key', () => {
-    const translation = i18n.global.t('common.retry');
-    expect(translation).toBe('Retry');
+  it('should resolve document.loading translation key', () => {
+    const translation = i18n.global.t('document.loading');
+    expect(translation).toBe('Loading document...');
   });
 
   it('should handle fallback for missing keys', () => {
@@ -39,8 +39,8 @@ describe('i18n configuration', () => {
 
   it('should have English messages loaded', () => {
     const messages = i18n.global.messages;
-    expect(messages.en).toBeDefined();
-    expect(messages.en.app).toBeDefined();
-    expect(messages.en.common).toBeDefined();
+    expect(messages['en-US']).toBeDefined();
+    expect(messages['en-US'].app).toBeDefined();
+    expect(messages['en-US'].layout).toBeDefined();
   });
 });

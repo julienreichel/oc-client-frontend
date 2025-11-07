@@ -9,11 +9,7 @@
     </q-header>
 
     <q-page-container>
-      <q-page padding>
-        <main role="main">
-          <slot />
-        </main>
-      </q-page>
+      <router-view />
     </q-page-container>
   </q-layout>
 </template>

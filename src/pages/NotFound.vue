@@ -20,7 +20,7 @@
           <!-- Home Button -->
           <div class="q-mt-xl">
             <q-btn
-              :to="{ name: 'home' }"
+              :to="{ name: 'access' }"
               color="primary"
               size="lg"
               unelevated
@@ -42,8 +42,6 @@
 <style lang="scss" scoped>
 .not-found-page {
   min-height: 60vh;
-  display: flex;
-  align-items: center;
 
   h1 {
     color: #424242; // grey-8 equivalent

@@ -13,7 +13,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'view/:code',
         name: 'document-view',
-        component: () => import('pages/IndexPage.vue'), // Placeholder for now
+        component: () => import('pages/DocumentViewPage.vue'),
       },
     ],
   },
@@ -21,8 +21,14 @@ const routes: RouteRecordRaw[] = [
   // Always leave this as last one - catch-all 404
   {
     path: '/:pathMatch(.*)*',
-    name: 'not-found',
-    component: () => import('pages/NotFound.vue'),
+    component: () => import('layouts/PublicLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'not-found',
+        component: () => import('pages/NotFound.vue'),
+      },
+    ],
   },
 ];
 
