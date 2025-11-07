@@ -53,6 +53,16 @@ export default {
     skipToMain: 'Skip to main content',
     loading: 'Loading...',
     errorRegion: 'Error message',
+    documentViewPage: 'Document view page',
+    documentNavigation: 'Document navigation',
+    documentContent: 'Document content',
+    documentTitle: 'Document title',
+    documentMetadata: 'Document metadata',
+    emptyDocumentState: 'Empty document state',
+    loadingSpinner: 'Loading spinner',
+    loadingMessage: 'Loading message',
+    errorIndicator: 'Error indicator',
+    errorMessage: 'Error message',
   },
 
   // 404 Not Found page

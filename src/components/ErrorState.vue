@@ -9,12 +9,17 @@
             :color="errorColor"
             size="4em"
             class="q-mb-md"
-            aria-label="Error indicator"
+            :aria-label="$t('a11y.errorIndicator')"
             data-cy="error-icon"
           />
 
           <!-- Error Message -->
-          <div class="text-h6 q-mb-md" role="alert" aria-label="Error message" data-cy="error-message">
+          <div
+            class="text-h6 q-mb-md"
+            role="alert"
+            :aria-label="$t('a11y.errorMessage')"
+            data-cy="error-message"
+          >
             {{ errorMessage }}
           </div>
 

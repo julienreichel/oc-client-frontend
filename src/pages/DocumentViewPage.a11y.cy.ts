@@ -37,7 +37,9 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/test123');
 
       // Main heading should receive focus for screen readers
-      cy.get('[aria-label="Document title"]').should('have.focus').and('have.attr', 'tabindex', '-1'); // Programmatic focus
+      cy.get('[aria-label="Document title"]')
+        .should('have.focus')
+        .and('have.attr', 'tabindex', '-1'); // Programmatic focus
     });
 
     it('should maintain focus when content loads', async () => {
@@ -94,7 +96,7 @@ describe('DocumentViewPage Accessibility', () => {
     it('should have accessible back navigation', async () => {
       await router.push('/view/test123');
 
-      // Back button should be clearly labeled  
+      // Back button should be clearly labeled
       cy.get('[aria-label="Enter New Code"]', { timeout: 5000 })
         .should('be.visible')
         .and('contain.text', 'Enter New Code')
@@ -198,7 +200,9 @@ describe('DocumentViewPage Accessibility', () => {
 
       // Content should be within main
       cy.get('main').within(() => {
-        cy.get('[aria-label="Document content"], [aria-label="Error message"], [aria-label="Loading..."]').should('exist');
+        cy.get(
+          '[aria-label="Document content"], [aria-label="Error message"], [aria-label="Loading..."]',
+        ).should('exist');
       });
     });
 

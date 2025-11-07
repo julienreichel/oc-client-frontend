@@ -1,13 +1,18 @@
 <template>
-  <q-page aria-label="Document view page" data-cy="document-view-page" class="flex flex-center">
+  <q-page :aria-label="$t('a11y.documentViewPage')" data-cy="document-view-page" class="flex flex-center">
     <!-- Skip link for screen readers -->
-    <a href="#main-content" class="sr-only sr-only-focusable" aria-label="Skip to main content" data-cy="skip-link">
+    <a
+      href="#main-content"
+      class="sr-only sr-only-focusable"
+      :aria-label="$t('a11y.skipToMain')"
+      data-cy="skip-link"
+    >
       {{ $t('a11y.skipToMain') }}
     </a>
 
     <div class="q-pa-md" style="max-width: 800px; width: 100%">
       <!-- Navigation landmark -->
-      <nav aria-label="Document navigation" class="q-mb-lg">
+      <nav :aria-label="$t('a11y.documentNavigation')" class="q-mb-lg">
         <q-btn
           :to="{ name: 'access' }"
           color="primary"
@@ -36,7 +41,7 @@
           v-else-if="state.error.value"
           role="alert"
           :aria-live="announcementMode"
-          aria-label="Error message"
+          :aria-label="$t('a11y.errorRegion')"
           data-cy="error-state"
         >
           <h1 class="sr-only">{{ $t('a11y.errorRegion') }}</h1>
@@ -44,7 +49,7 @@
         </div>
 
         <!-- Success State -->
-        <div v-else-if="state.data.value" aria-label="Document content" data-cy="document-viewer">
+        <div v-else-if="state.data.value" :aria-label="$t('a11y.documentContent')" data-cy="document-viewer">
           <h1 :id="documentTitleId" class="sr-only">
             {{ $t('document.title') }} {{ state.data.value.title || 'Document' }}
           </h1>
@@ -52,7 +57,13 @@
         </div>
 
         <!-- Empty State (when no data but no error) -->
-        <div v-else role="status" :aria-live="announcementMode" aria-label="Empty document state" data-cy="empty-state">
+        <div
+          v-else
+          role="status"
+          :aria-live="announcementMode"
+          :aria-label="$t('a11y.emptyDocumentState')"
+          data-cy="empty-state"
+        >
           <div class="text-center q-py-xl">
             <q-icon name="description" size="4rem" color="grey-5" />
             <h2 class="text-h6 text-grey-7 q-mt-md q-mb-sm">
