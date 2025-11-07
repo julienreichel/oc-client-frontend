@@ -131,4 +131,30 @@ describe('ProviderRegistry', () => {
       expect(isHttpProvider(provider)).toBe(true);
     });
   });
+
+  describe('hostname-based provider selection', () => {
+    it('should test configureProvider behavior for different modes', () => {
+      // Test development mode always returns mock
+      const mockProvider = configureProvider({ mode: 'development' });
+      expect(isMockProvider(mockProvider)).toBe(true);
+
+      // Test production mode always returns HTTP
+      const httpProvider = configureProvider({
+        mode: 'production',
+        baseUrl: '/api',
+      });
+      expect(isHttpProvider(httpProvider)).toBe(true);
+    });
+
+    it('should handle configuration parameters correctly', () => {
+      const provider = configureProvider({
+        mode: 'production',
+        baseUrl: '/api',
+        timeout: 5000,
+        headers: { 'X-Test': 'value' },
+      });
+
+      expect(isHttpProvider(provider)).toBe(true);
+    });
+  });
 });

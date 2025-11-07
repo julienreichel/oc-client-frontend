@@ -6,16 +6,45 @@ import { HttpDocumentProvider } from './HttpDocumentProvider';
  * Registry for document providers
  *
  * This module provides a central place to manage the active document provider.
- * By default, it uses the HttpDocumentProvider with same-origin /api endpoint.
- * Set VUE_APP_USE_MOCK_PROVIDER=true to use MockDocumentProvider instead.
+ * Provider selection logic:
+ * - MockProvider: localhost with port numbers (e.g., localhost:9000, localhost:3000)
+ * - HttpProvider: production domains and custom local domains (e.g., client.localhost)
+ * - Override: VUE_APP_USE_MOCK_PROVIDER=true/false to force specific provider
  */
+
+/**
+ * Determines if the current environment should use mock provider
+ * Based on hostname and explicit configuration
+ */
+const shouldUseMockProvider = (): boolean => {
+  // Explicit override via environment variable
+  if (process.env.VUE_APP_USE_MOCK_PROVIDER === 'true') {
+    return true;
+  }
+
+  // Force HTTP provider via environment variable
+  if (process.env.VUE_APP_USE_MOCK_PROVIDER === 'false') {
+    return false;
+  }
+
+  // In browser environment, check hostname
+  if (typeof window !== 'undefined' && window.location) {
+    const { hostname, port } = window.location;
+    
+    // Use mock for localhost with port numbers (e.g., localhost:9000, localhost:3000)
+    // But allow HTTP for custom local domains (e.g., client.localhost)
+    if (hostname === 'localhost' && port) {
+      return true;
+    }
+  }
+
+  // Default to HTTP provider for all other cases
+  return false;
+};
 
 // Initialize the active provider based on environment
 const getDefaultProvider = (): DocumentProvider => {
-  // Use HTTP provider by default, unless explicitly set to use mock
-  const useMockProvider = process.env.VUE_APP_USE_MOCK_PROVIDER === 'true';
-
-  if (useMockProvider) {
+  if (shouldUseMockProvider()) {
     return configureProvider({ mode: 'development' });
   }
 
