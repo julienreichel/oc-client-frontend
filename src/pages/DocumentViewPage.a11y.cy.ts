@@ -19,7 +19,15 @@ describe('DocumentViewPage Accessibility', () => {
     cy.mount(DocumentViewPage, {
       global: {
         plugins: [router, i18n],
+        mocks: {
+          $route: {
+            params: { code: 'TEST123' },
+          },
+        },
       },
+    }).then(async () => {
+      // Navigate to the view page to ensure proper component state
+      await router.push('/view/TEST123');
     });
   });
 
@@ -195,14 +203,20 @@ describe('DocumentViewPage Accessibility', () => {
       });
     });
 
-    it('should have skip links for keyboard users', () => {
-      // Verify component structure supports keyboard accessibility
-      cy.get('[data-cy="document-view-page"]').should('exist');
+    it('should have skip links for keyboard users', async () => {
+      // Navigate to the document view page first
+      await router.push('/view/test123');
+
+      // Wait for component to mount properly
+      cy.get('[data-cy="document-view-page"]', { timeout: 10000 }).should('exist');
 
       // Check that main content area exists for skip link target
       cy.get('#main-content').should('exist');
 
-      // Verify page has accessibility structure even if skip link isn't visible
+      // Verify skip link exists (even if hidden)
+      cy.get('[data-cy="skip-link"]').should('exist');
+
+      // Verify page has accessibility structure
       cy.get('[data-cy="document-view-page"]').should('not.be.empty');
     });
   });
