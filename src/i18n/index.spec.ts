@@ -32,6 +32,11 @@ describe('i18n configuration', () => {
     expect(translation).toBe('Loading document...');
   });
 
+  it('should resolve document.backToHome translation key', () => {
+    const translation = i18n.global.t('document.backToHome');
+    expect(translation).toBe('Enter New Code');
+  });
+
   it('should handle fallback for missing keys', () => {
     const translation = i18n.global.t('nonexistent.key');
     expect(translation).toBe('nonexistent.key');

@@ -46,8 +46,10 @@ describe('Router Routes', () => {
     const notFoundRoute = routes.find((route: RouteRecordRaw) => route.path === '/:pathMatch(.*)*');
 
     expect(notFoundRoute).toBeDefined();
-    expect(notFoundRoute?.name).toBe('not-found');
     expect(notFoundRoute?.component).toBeDefined();
+    expect(notFoundRoute?.children).toBeDefined();
+    expect(notFoundRoute?.children?.[0]?.name).toBe('not-found');
+    expect(notFoundRoute?.children?.[0]?.component).toBeDefined();
   });
 
   it('should have proper route names for navigation', () => {
@@ -61,6 +63,6 @@ describe('Router Routes', () => {
     }
 
     const catchAllRoute = routes.find((route: RouteRecordRaw) => route.path === '/:pathMatch(.*)*');
-    expect(catchAllRoute?.name).toBe('not-found');
+    expect(catchAllRoute?.children?.[0]?.name).toBe('not-found');
   });
 });
