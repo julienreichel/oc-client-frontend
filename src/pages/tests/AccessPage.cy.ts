@@ -1,4 +1,4 @@
-import AccessPage from './AccessPage.vue';
+import AccessPage from '../AccessPage.vue';
 import { AccessPageGetters } from './AccessPage.getters';
 
 describe('AccessPage', () => {

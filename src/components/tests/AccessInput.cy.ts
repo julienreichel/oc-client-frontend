@@ -1,4 +1,4 @@
-import AccessInput from './AccessInput.vue';
+import AccessInput from '../AccessInput.vue';
 import { AccessInputGetters } from './AccessInput.getters';
 
 describe('AccessInput', () => {

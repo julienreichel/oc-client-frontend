@@ -1,5 +1,5 @@
-import DocumentViewer from './DocumentViewer.vue';
-import type { PublicDocument } from '../models/PublicDocument';
+import DocumentViewer from '../DocumentViewer.vue';
+import type { PublicDocument } from '../../models/PublicDocument';
 import { DocumentViewerGetters } from './DocumentViewer.getters';
 
 describe('DocumentViewer', () => {

@@ -1,4 +1,4 @@
-import DocumentViewPage from './DocumentViewPage.vue';
+import DocumentViewPage from '../DocumentViewPage.vue';
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { i18n } from 'src/i18n';
 import { DocumentViewPageGetters } from './DocumentViewPage.getters';

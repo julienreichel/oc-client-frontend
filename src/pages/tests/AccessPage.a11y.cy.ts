@@ -1,6 +1,6 @@
-import AccessPage from './AccessPage.vue';
+import AccessPage from '../AccessPage.vue';
 import { AccessPageGetters } from './AccessPage.getters';
-import { AccessInputGetters } from 'src/components/AccessInput.getters';
+import { AccessInputGetters } from 'src/components/tests/AccessInput.getters';
 
 describe('AccessPage Accessibility', () => {
   beforeEach(() => {

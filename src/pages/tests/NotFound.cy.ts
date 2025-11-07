@@ -1,4 +1,4 @@
-import NotFound from './NotFound.vue';
+import NotFound from '../NotFound.vue';
 
 describe('NotFound.cy.ts', () => {
   it('renders basic structure', () => {
