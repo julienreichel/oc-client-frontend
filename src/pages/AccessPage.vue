@@ -1,7 +1,12 @@
 <template>
-  <q-page padding>
+  <q-page padding :aria-label="$t('a11y.accessPage')" data-cy="access-page">
     <!-- Skip link for screen readers -->
-    <a href="#main-content" class="sr-only sr-only-focusable" data-cy="skip-link">
+    <a
+      href="#main-content"
+      class="sr-only sr-only-focusable"
+      :aria-label="$t('a11y.skipToMain')"
+      data-cy="skip-link"
+    >
       {{ $t('a11y.skipToMain') }}
     </a>
 
@@ -10,7 +15,7 @@
         <q-card class="q-pa-lg">
           <q-card-section>
             <main id="main-content" role="main">
-              <h1 class="text-h5 text-center q-mb-md">
+              <h1 class="text-h5 text-center q-mb-md" :aria-label="$t('a11y.accessPageTitle')">
                 {{ $t('access.title') }}
               </h1>
 
@@ -18,7 +23,7 @@
                 {{ $t('access.instructions') }}
               </p>
 
-              <form @submit.prevent="handleSubmit" aria-label="Document Access Form" novalidate>
+              <form @submit.prevent="handleSubmit" :aria-label="$t('a11y.accessForm')" novalidate>
                 <div class="q-mb-md">
                   <label
                     :for="inputId"
@@ -37,6 +42,7 @@
                     :error-message="showError ? $t('access.validation.required') : undefined"
                     :aria-describedby="showError ? errorId : instructionId"
                     :aria-invalid="showError"
+                    :aria-label="$t('a11y.accessInputField')"
                     aria-required="true"
                     outlined
                     class="q-mb-sm"
@@ -56,6 +62,7 @@
                     class="text-negative text-caption q-mt-xs"
                     role="alert"
                     aria-live="assertive"
+                    :aria-label="$t('a11y.accessInputError')"
                     data-cy="error-message"
                   >
                     {{ $t('access.validation.required') }}
@@ -67,6 +74,7 @@
                     type="submit"
                     color="primary"
                     :label="$t('access.submit')"
+                    :aria-label="$t('a11y.accessSubmitButton')"
                     :aria-describedby="showError ? errorId : instructionId"
                     class="q-px-xl"
                     data-cy="submit-button"

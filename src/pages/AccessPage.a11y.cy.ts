@@ -1,4 +1,6 @@
 import AccessPage from './AccessPage.vue';
+import { AccessPageGetters } from './AccessPage.getters';
+import { AccessInputGetters } from 'src/components/AccessInput.getters';
 
 describe('AccessPage Accessibility', () => {
   beforeEach(() => {
@@ -8,56 +10,52 @@ describe('AccessPage Accessibility', () => {
   describe('form accessibility', () => {
     it('should have properly labeled input field', () => {
       // Check that input has proper label association (better than aria-label)
-      cy.get('[data-cy="access-code-input"]').should('have.attr', 'id');
+      AccessInputGetters.getInputField().should('have.attr', 'id');
 
       // Get the input ID and check if there's a corresponding label
-      cy.get('[data-cy="access-code-input"]')
+      AccessInputGetters.getInputField()
         .invoke('attr', 'id')
         .then((inputId) => {
           cy.get(`label[for="${inputId}"]`).should('exist').and('contain.text', 'Access Code');
         });
 
       // Check placeholder is present for additional guidance
-      cy.get('[data-cy="access-code-input"]')
-        .should('have.attr', 'placeholder')
-        .and('not.be.empty');
+      AccessInputGetters.getInputField().should('have.attr', 'placeholder').and('not.be.empty');
     });
 
     it('should have accessible submit button', () => {
       // Button should exist and have proper attributes
-      cy.get('[data-cy="submit-button"]').should('exist');
+      AccessPageGetters.getSubmitButton().should('exist');
 
       // Check for aria-describedby for additional accessibility context
-      cy.get('[data-cy="submit-button"]').should('have.attr', 'aria-describedby');
+      AccessPageGetters.getSubmitButton().should('have.attr', 'aria-describedby');
 
       // Button should be keyboard accessible
-      cy.get('[data-cy="submit-button"]').should('have.attr', 'type', 'submit');
+      AccessPageGetters.getSubmitButton().should('have.attr', 'type', 'submit');
     });
 
     it('should associate error messages with input', () => {
       // Verify input has proper accessibility setup (without chaining aria-describedby)
-      cy.get('[data-cy="access-code-input"]').should('have.attr', 'aria-required', 'true');
-      cy.get('[data-cy="access-code-input"]').should('have.attr', 'aria-describedby');
-      cy.get('[data-cy="access-code-input"]').should('have.attr', 'aria-invalid');
+      AccessInputGetters.getInputField().should('have.attr', 'aria-required', 'true');
+      AccessInputGetters.getInputField().should('have.attr', 'aria-describedby');
+      AccessInputGetters.getInputField().should('have.attr', 'aria-invalid');
 
       // Verify form structure supports error association
-      cy.get('form').should('have.attr', 'novalidate');
+      AccessPageGetters.getForm().should('have.attr', 'novalidate');
 
       // Check that input has proper ID for label association
-      cy.get('[data-cy="access-code-input"]').should('have.attr', 'id');
-      cy.get('[data-cy="access-code-input"]')
+      AccessInputGetters.getInputField().should('have.attr', 'id');
+      AccessInputGetters.getInputField()
         .invoke('attr', 'id')
         .should('match', /access-code-\d+/);
     });
 
     it('should provide clear error messaging', () => {
       // Verify the form has proper structure for error messaging
-      cy.get('form')
-        .should('have.attr', 'aria-label', 'Document Access Form')
-        .and('have.attr', 'novalidate');
+      AccessPageGetters.getForm().should('exist').and('have.attr', 'novalidate');
 
       // Verify input has proper labeling structure
-      cy.get('[data-cy="access-code-input"]').then(($input) => {
+      AccessInputGetters.getInputField().then(($input) => {
         const inputId = $input.attr('id');
         expect(inputId).to.match(/access-code-\d+/);
 
@@ -66,16 +64,16 @@ describe('AccessPage Accessibility', () => {
       });
 
       // Check that form has accessible labeling
-      cy.get('form[aria-label="Document Access Form"]').should('exist');
+      AccessPageGetters.getForm().should('exist');
     });
 
     it('should maintain focus management', () => {
       // Check elements exist and have proper attributes for focus management
-      cy.get('[data-cy="access-code-input"]').should('exist').and('have.attr', 'id');
-      cy.get('[data-cy="submit-button"]').should('exist').and('have.attr', 'type', 'submit');
+      AccessInputGetters.getInputField().should('exist').and('have.attr', 'id');
+      AccessPageGetters.getSubmitButton().should('exist').and('have.attr', 'type', 'submit');
 
       // Check that input has proper ARIA attributes for focus management
-      cy.get('[data-cy="access-code-input"]')
+      AccessInputGetters.getInputField()
         .should('have.attr', 'aria-required', 'true')
         .and('have.attr', 'aria-describedby');
     });
@@ -84,38 +82,38 @@ describe('AccessPage Accessibility', () => {
   describe('keyboard navigation', () => {
     it('should support Enter key submission', () => {
       // Verify form has proper keyboard accessibility setup
-      cy.get('form').should('have.attr', 'novalidate');
+      AccessPageGetters.getForm().should('have.attr', 'novalidate');
 
       // Check that input has proper keyboard attributes (without chaining)
-      cy.get('[data-cy="access-code-input"]').should('have.attr', 'id');
-      cy.get('[data-cy="access-code-input"]').should('have.attr', 'aria-required', 'true');
+      AccessInputGetters.getInputField().should('have.attr', 'id');
+      AccessInputGetters.getInputField().should('have.attr', 'aria-required', 'true');
 
       // Verify submit button is keyboard accessible
-      cy.get('[data-cy="submit-button"]').should('have.attr', 'type', 'submit');
+      AccessPageGetters.getSubmitButton().should('have.attr', 'type', 'submit');
     });
 
     it('should handle Escape key gracefully', () => {
       // Verify input maintains proper ARIA attributes (without chaining)
-      cy.get('[data-cy="access-code-input"]').should('have.attr', 'aria-describedby');
-      cy.get('[data-cy="access-code-input"]').should('have.attr', 'aria-invalid');
+      AccessInputGetters.getInputField().should('have.attr', 'aria-describedby');
+      AccessInputGetters.getInputField().should('have.attr', 'aria-invalid');
 
       // Form should remain functional for keyboard users
-      cy.get('form').should('have.attr', 'novalidate');
+      AccessPageGetters.getForm().should('have.attr', 'novalidate');
     });
   });
 
   describe('screen reader support', () => {
     it('should have page title for screen readers', () => {
       // Page should have main heading
-      cy.get('h1').should('exist').and('be.visible');
-      cy.get('h1').should('contain.text', 'Enter Access Code');
+      AccessPageGetters.getTitle().should('exist').and('be.visible');
+      AccessPageGetters.getTitle().should('contain.text', 'Enter Access Code');
     });
 
     it('should provide form instructions', () => {
-      // Check for visible instructions text
+      // Check for visible instructions text (semantic content test)
       cy.contains('Enter the access code you received to view your document').should('exist');
 
-      // Check for screen reader instructions (hidden but accessible)
+      // Check for screen reader announcements region (accessibility structure)
       cy.get('div[aria-live="polite"]').should('exist');
     });
   });

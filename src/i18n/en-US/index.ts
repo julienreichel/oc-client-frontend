@@ -63,6 +63,15 @@ export default {
     loadingMessage: 'Loading message',
     errorIndicator: 'Error indicator',
     errorMessage: 'Error message',
+    // AccessPage labels
+    accessPage: 'Document access page',
+    accessForm: 'Document access form',
+    accessPageTitle: 'Enter access code',
+    accessSubmitButton: 'Submit access code',
+    // AccessInput labels
+    accessInputField: 'Access code input',
+    accessInputError: 'Access code error',
+    accessInputLabel: 'Access code label',
   },
 
   // 404 Not Found page

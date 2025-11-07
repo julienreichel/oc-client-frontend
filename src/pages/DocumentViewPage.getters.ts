@@ -1,50 +1,88 @@
 /**
- * Minimal getter utilities for DocumentViewPage accessibility testing.
- * Only contains getters for elements that actually exist in the component.
+ * Cypress component test getter utilities for DocumentViewPage
+ *
+ * Provides semantic, accessibility-first element getters using aria-label selectors.
+ * Follows minimal abstraction pattern with only getters for elements that exist.
+ *
+ * @see https://docs.cypress.io/guides/component-testing/introduction
+ * @see https://testing-library.com/docs/queries/byrole/
  */
 
-// Base utility function for aria-label selectors
-export const getByAriaText = (text: string, options?: { timeout?: number }): Cypress.Chainable<JQuery<HTMLElement>> =>
-  cy.get(`[aria-label="${text}"]`, options);
+/// <reference types="cypress" />
 
-// Elements that exist in DocumentViewPage.vue
-export const getDocumentViewPage = (options?: { timeout?: number }): Cypress.Chainable<JQuery<HTMLElement>> =>
-  getByAriaText('Document view page', options);
+// Base utility for aria-label based selection
+const getByAriaLabel = (label: string): Cypress.Chainable<JQuery<HTMLElement>> =>
+  cy.get(`[aria-label="${label}"]`);
 
-export const getSkipToMainContent = (options?: { timeout?: number }): Cypress.Chainable<JQuery<HTMLElement>> =>
-  getByAriaText('Skip to main content', options);
+/**
+ * DocumentViewPage component getters
+ * Uses aria-label selectors for accessibility-first testing approach
+ */
+export const DocumentViewPageGetters = {
+  /**
+   * Main page container
+   */
+  getPage: () => getByAriaLabel('Document view page'),
 
-// Elements from DocumentViewer.vue component
-export const getDocumentTitle = (options?: { timeout?: number }): Cypress.Chainable<JQuery<HTMLElement>> =>
-  getByAriaText('Document title', options);
+  /**
+   * Skip to main content link
+   */
+  getSkipToMainContent: () => getByAriaLabel('Skip to main content'),
 
-export const getDocumentMetadata = (options?: { timeout?: number }): Cypress.Chainable<JQuery<HTMLElement>> =>
-  getByAriaText('Document metadata', options);
+  /**
+   * Document title display
+   */
+  getDocumentTitle: () => getByAriaLabel('Document title'),
 
-export const getDocumentContent = (options?: { timeout?: number }): Cypress.Chainable<JQuery<HTMLElement>> =>
-  getByAriaText('Document content', options);
+  /**
+   * Document metadata information
+   */
+  getDocumentMetadata: () => getByAriaLabel('Document metadata'),
 
-export const getEmptyDocumentState = (options?: { timeout?: number }): Cypress.Chainable<JQuery<HTMLElement>> =>
-  getByAriaText('Empty document state', options);
+  /**
+   * Document content area
+   */
+  getDocumentContent: () => getByAriaLabel('Document content'),
 
-// Elements from ErrorState.vue component  
-export const getErrorMessage = (options?: { timeout?: number }): Cypress.Chainable<JQuery<HTMLElement>> =>
-  getByAriaText('Error message', options);
+  /**
+   * Empty document state display
+   */
+  getEmptyDocumentState: () => getByAriaLabel('Empty document state'),
 
-export const getTryAgainButton = (options?: { timeout?: number }): Cypress.Chainable<JQuery<HTMLElement>> =>
-  getByAriaText('Try Again', options);
+  /**
+   * Error message text
+   */
+  getErrorMessage: () => getByAriaLabel('Error message'),
 
-// Elements from LoadingState.vue component
-export const getLoadingMessage = (options?: { timeout?: number }): Cypress.Chainable<JQuery<HTMLElement>> =>
-  getByAriaText('Loading message', options);
+  /**
+   * Retry/try again button
+   */
+  getTryAgainButton: () => getByAriaLabel('Try Again'),
 
-export const getLoadingSpinner = (options?: { timeout?: number }): Cypress.Chainable<JQuery<HTMLElement>> =>
-  getByAriaText('Loading spinner', options);
+  /**
+   * Loading message text
+   */
+  getLoadingMessage: () => getByAriaLabel('Loading message'),
 
-// Navigation element from DocumentViewPage.vue (back-to-home button)
-export const getEnterNewCodeButton = (options?: { timeout?: number }): Cypress.Chainable<JQuery<HTMLElement>> =>
-  getByAriaText('Enter New Code', options);
+  /**
+   * Loading spinner indicator
+   */
+  getLoadingSpinner: () => getByAriaLabel('Loading spinner'),
 
-// Alias for the same element (back-to-home button has aria-label="Enter New Code")
-export const getBackToHomeButton = (options?: { timeout?: number }): Cypress.Chainable<JQuery<HTMLElement>> =>
-  getEnterNewCodeButton(options);
+  /**
+   * Enter new code button (navigation)
+   */
+  getEnterNewCodeButton: () => getByAriaLabel('Enter New Code'),
+
+  /**
+   * Back to home button (alias for enter new code button)
+   */
+  getBackToHomeButton: () => getByAriaLabel('Enter New Code'),
+} as const;
+
+/**
+ * Type definitions for getter return values
+ */
+export type DocumentViewPageElements = {
+  [K in keyof typeof DocumentViewPageGetters]: ReturnType<(typeof DocumentViewPageGetters)[K]>;
+};

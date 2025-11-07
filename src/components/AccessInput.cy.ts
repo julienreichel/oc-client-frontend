@@ -1,4 +1,5 @@
 import AccessInput from './AccessInput.vue';
+import { AccessInputGetters } from './AccessInput.getters';
 
 describe('AccessInput', () => {
   it('renders label and placeholder correctly', () => {
@@ -13,14 +14,10 @@ describe('AccessInput', () => {
     cy.mount(AccessInput, { props });
 
     // Check label is rendered
-    cy.get('[data-cy="access-input-label"]').should('contain.text', 'Access Code');
+    AccessInputGetters.getLabel().should('contain.text', 'Access Code');
 
     // Check input has correct placeholder
-    cy.get('[data-cy="access-input-field"]').should(
-      'have.attr',
-      'placeholder',
-      'Enter your access code',
-    );
+    AccessInputGetters.getInputField().should('have.attr', 'placeholder', 'Enter your access code');
   });
 
   it('shows validation error when showError is true', () => {
@@ -35,8 +32,8 @@ describe('AccessInput', () => {
     cy.mount(AccessInput, { props });
 
     // Check error message is displayed
-    cy.get('[data-cy="access-input-error"]').should('be.visible');
-    cy.get('[data-cy="access-input-error"]').should('contain.text', 'Access code is required');
+    AccessInputGetters.getErrorMessage().should('be.visible');
+    AccessInputGetters.getErrorMessage().should('contain.text', 'Access code is required');
   });
 
   it('hides validation error when showError is false', () => {
@@ -51,7 +48,7 @@ describe('AccessInput', () => {
     cy.mount(AccessInput, { props });
 
     // Check error message is not displayed
-    cy.get('[data-cy="access-input-error"]').should('not.exist');
+    AccessInputGetters.getErrorMessage().should('not.exist');
   });
 
   it('renders with correct model value attribute', () => {
@@ -66,6 +63,6 @@ describe('AccessInput', () => {
     cy.mount(AccessInput, { props });
 
     // Verify the component has the model-value attribute set
-    cy.get('[data-cy="access-input-field"]').should('have.attr', 'model-value', 'TEST123');
+    AccessInputGetters.getInputField().should('have.attr', 'model-value', 'TEST123');
   });
 });

@@ -1,5 +1,6 @@
 import DocumentViewer from './DocumentViewer.vue';
 import type { PublicDocument } from '../models/PublicDocument';
+import { DocumentViewerGetters } from './DocumentViewer.getters';
 
 describe('DocumentViewer', () => {
   const mockDocument: PublicDocument = {
@@ -20,7 +21,7 @@ describe('DocumentViewer', () => {
       },
     });
 
-    cy.get('[data-cy="document-title"]').should('contain.text', 'Sample Document Title');
+    DocumentViewerGetters.getTitle().should('contain.text', 'Sample Document Title');
   });
 
   it('renders document content correctly', () => {
@@ -30,7 +31,7 @@ describe('DocumentViewer', () => {
       },
     });
 
-    cy.get('[data-cy="document-content"]').should(
+    DocumentViewerGetters.getContent().should(
       'contain.text',
       'This is the document content with some text.',
     );
@@ -44,10 +45,10 @@ describe('DocumentViewer', () => {
     });
 
     // The date element should exist and not contain the raw ISO string
-    cy.get('[data-cy="document-created-at"]').should('exist');
-    cy.get('[data-cy="document-created-at"]').should('not.contain.text', '2024-01-15T10:30:00Z');
+    DocumentViewerGetters.getMetadata().should('exist');
+    DocumentViewerGetters.getMetadata().should('not.contain.text', '2024-01-15T10:30:00Z');
     // Should contain formatted content (could be i18n key in test environment)
-    cy.get('[data-cy="document-created-at"]').should('not.be.empty');
+    DocumentViewerGetters.getMetadata().should('not.be.empty');
   });
 
   it('sanitizes content by rendering as text only', () => {
@@ -65,14 +66,14 @@ describe('DocumentViewer', () => {
     });
 
     // Should render the HTML as plain text (sanitized)
-    cy.get('[data-cy="document-content"]').should('contain.text', '<script>alert("xss")</script>');
-    cy.get('[data-cy="document-content"]').should('contain.text', '<p>Safe content</p>');
-    cy.get('[data-cy="document-content"]').should('contain.text', '<b>Bold text</b>');
+    DocumentViewerGetters.getContent().should('contain.text', '<script>alert("xss")</script>');
+    DocumentViewerGetters.getContent().should('contain.text', '<p>Safe content</p>');
+    DocumentViewerGetters.getContent().should('contain.text', '<b>Bold text</b>');
 
     // Should NOT execute or render HTML
-    cy.get('[data-cy="document-content"] script').should('not.exist');
-    cy.get('[data-cy="document-content"] p').should('not.exist');
-    cy.get('[data-cy="document-content"] b').should('not.exist');
+    DocumentViewerGetters.getContent().find('script').should('not.exist');
+    DocumentViewerGetters.getContent().find('p').should('not.exist');
+    DocumentViewerGetters.getContent().find('b').should('not.exist');
   });
 
   it('handles empty or missing content gracefully', () => {
@@ -89,9 +90,9 @@ describe('DocumentViewer', () => {
       },
     });
 
-    cy.get('[data-cy="document-title"]').should('contain.text', 'Empty Document');
-    cy.get('[data-cy="document-content"]').should('exist');
-    cy.get('[data-cy="document-created-at"]').should('exist');
+    DocumentViewerGetters.getTitle().should('contain.text', 'Empty Document');
+    DocumentViewerGetters.getContent().should('exist');
+    DocumentViewerGetters.getMetadata().should('exist');
   });
 
   it('handles document without meta information', () => {
@@ -109,9 +110,9 @@ describe('DocumentViewer', () => {
       },
     });
 
-    cy.get('[data-cy="document-title"]').should('contain.text', 'No Meta Document');
-    cy.get('[data-cy="document-content"]').should('contain.text', 'Content without metadata');
-    cy.get('[data-cy="document-created-at"]').should('exist');
+    DocumentViewerGetters.getTitle().should('contain.text', 'No Meta Document');
+    DocumentViewerGetters.getContent().should('contain.text', 'Content without metadata');
+    DocumentViewerGetters.getMetadata().should('exist');
   });
 
   it('preserves whitespace and line breaks in content', () => {
@@ -129,8 +130,8 @@ describe('DocumentViewer', () => {
     });
 
     // Content should preserve formatting
-    cy.get('[data-cy="document-content"]').should('contain.text', 'Line 1');
-    cy.get('[data-cy="document-content"]').should('contain.text', 'Line 3 with spaces');
-    cy.get('[data-cy="document-content"]').should('contain.text', 'Indented line');
+    DocumentViewerGetters.getContent().should('contain.text', 'Line 1');
+    DocumentViewerGetters.getContent().should('contain.text', 'Line 3 with spaces');
+    DocumentViewerGetters.getContent().should('contain.text', 'Indented line');
   });
 });

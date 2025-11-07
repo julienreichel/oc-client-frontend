@@ -6,6 +6,7 @@
       :placeholder="placeholder"
       :error="showError"
       :error-message="errorMessage"
+      :aria-label="$t('a11y.accessInputField')"
       filled
       data-cy="access-input-field"
       @update:model-value="(value) => $emit('update:modelValue', String(value || ''))"
@@ -19,13 +20,14 @@
     <div
       v-if="showError && errorMessage"
       class="text-negative text-caption q-mt-xs"
+      :aria-label="$t('a11y.accessInputError')"
       data-cy="access-input-error"
     >
       {{ errorMessage }}
     </div>
 
     <!-- Hidden label for accessibility (screen readers) -->
-    <label class="sr-only" data-cy="access-input-label">
+    <label class="sr-only" :aria-label="$t('a11y.accessInputLabel')" data-cy="access-input-label">
       {{ label }}
     </label>
   </div>

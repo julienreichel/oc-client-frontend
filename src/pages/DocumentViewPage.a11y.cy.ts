@@ -1,19 +1,7 @@
 import DocumentViewPage from './DocumentViewPage.vue';
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { i18n } from 'src/i18n';
-import {
-  getDocumentTitle,
-  getDocumentMetadata,
-  getDocumentContent,
-  getEmptyDocumentState,
-  getErrorMessage,
-  getTryAgainButton,
-  getEnterNewCodeButton,
-  getLoadingMessage,
-  getLoadingSpinner,
-  getDocumentViewPage,
-  getSkipToMainContent
-} from './DocumentViewPage.getters';
+import { DocumentViewPageGetters } from './DocumentViewPage.getters';
 
 const routes = [
   { path: '/', name: 'access', component: { template: '<div>Access</div>' } },
@@ -50,7 +38,7 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/test123');
 
       // Main heading should receive focus for screen readers
-      getDocumentTitle()
+      DocumentViewPageGetters.getDocumentTitle()
         .should('have.focus')
         .and('have.attr', 'tabindex', '-1'); // Programmatic focus
     });
@@ -59,16 +47,14 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/valid123');
 
       // When document loads successfully, focus should remain on title
-      getDocumentTitle({ timeout: 5000 })
-        .should('be.visible')
-        .and('have.focus');
+      DocumentViewPageGetters.getDocumentTitle().should('be.visible').and('have.focus');
     });
 
     it('should focus error heading when error occurs', async () => {
       await router.push('/view/invalid123');
 
       // When error occurs, focus should be on error message
-      getErrorMessage({ timeout: 5000 })
+      DocumentViewPageGetters.getErrorMessage()
         .should('be.visible')
         .and('have.focus')
         .and('have.attr', 'tabindex', '-1');
@@ -80,7 +66,7 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/notfound');
 
       // Error message should have role="alert" for screen readers
-      getErrorMessage({ timeout: 5000 })
+      DocumentViewPageGetters.getErrorMessage()
         .should('be.visible')
         .and('have.attr', 'role', 'alert');
     });
@@ -89,7 +75,7 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/expired');
 
       // Error messages should be human-friendly
-      getErrorMessage({ timeout: 5000 })
+      DocumentViewPageGetters.getErrorMessage()
         .should('contain.text', 'no longer available')
         .and('not.contain', 'expired')
         .and('not.contain', '410')
@@ -100,7 +86,7 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/unavailable');
 
       // Retry button should be properly labeled
-      getTryAgainButton({ timeout: 5000 })
+      DocumentViewPageGetters.getTryAgainButton()
         .should('be.visible')
         .and('contain.text', 'Try Again')
         .and('have.attr', 'type', 'button');
@@ -110,7 +96,7 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/test123');
 
       // Back button should be clearly labeled
-      getEnterNewCodeButton({ timeout: 5000 })
+      DocumentViewPageGetters.getEnterNewCodeButton()
         .should('be.visible')
         .and('contain.text', 'Enter New Code')
         .and('have.attr', 'role', 'button');
@@ -122,7 +108,7 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/loading123');
 
       // Loading message should be announced
-      getLoadingMessage()
+      DocumentViewPageGetters.getLoadingMessage()
         .should('be.visible')
         .and('have.attr', 'aria-live', 'polite');
     });
@@ -132,16 +118,12 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/loading123');
 
       // Check that loading elements provide meaningful text for screen readers
-      getLoadingMessage()
+      DocumentViewPageGetters.getLoadingMessage()
         .should('exist')
         .and('contain.text', 'Loading your document');
 
       // Verify loading spinner has accessibility role
-      getLoadingSpinner({ timeout: 1000 }).should(
-        'have.attr',
-        'role',
-        'status',
-      );
+      DocumentViewPageGetters.getLoadingSpinner().should('have.attr', 'role', 'status');
     });
   });
 
@@ -150,18 +132,17 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/valid123');
 
       // Document should have proper heading hierarchy
-      getDocumentTitle({ timeout: 5000 })
-        .should('be.visible')
-        .and('match', 'h1');
+      DocumentViewPageGetters.getDocumentTitle().should('be.visible').and('match', 'h1');
     });
 
     it('should provide document meta information', async () => {
       await router.push('/view/valid123');
 
       // Document metadata should be accessible
-      getDocumentMetadata({ timeout: 5000 })
+      DocumentViewPageGetters.getDocumentMetadata()
         .should('be.visible')
         .and('have.attr', 'aria-label')
+        .invoke('attr', 'aria-label')
         .then((ariaLabel) => {
           expect(ariaLabel).to.contain('Document metadata');
         });
@@ -171,12 +152,12 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/empty123');
 
       // Empty content should be indicated
-      getDocumentContent({ timeout: 5000 })
+      DocumentViewPageGetters.getDocumentContent()
         .should('exist')
-        .then(($content) => {
+        .then(($content: JQuery<HTMLElement>) => {
           if ($content.text().trim() === '') {
             // Should have indication of empty content
-            getEmptyDocumentState()
+            DocumentViewPageGetters.getEmptyDocumentState()
               .should('be.visible')
               .and('contain.text', 'No content available');
           }
@@ -189,10 +170,7 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/error123');
 
       // Retry button should be keyboard accessible
-      getTryAgainButton({ timeout: 5000 })
-        .focus()
-        .should('have.focus')
-        .type('{enter}');
+      DocumentViewPageGetters.getTryAgainButton().focus().should('have.focus').type('{enter}');
     });
 
     it('should support Escape key for back navigation', async () => {
@@ -223,8 +201,8 @@ describe('DocumentViewPage Accessibility', () => {
       await router.push('/view/test123');
 
       // Check accessibility elements
-      getSkipToMainContent().should('exist');
-      getDocumentViewPage({ timeout: 10000 }).should('exist').and('not.be.empty');
+      DocumentViewPageGetters.getSkipToMainContent().should('exist');
+      DocumentViewPageGetters.getPage().should('exist').and('not.be.empty');
 
       // Check that main content area exists for skip link target
       cy.get('#main-content').should('exist');
