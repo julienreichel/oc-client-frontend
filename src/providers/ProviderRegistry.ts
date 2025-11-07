@@ -1,18 +1,34 @@
 import type { DocumentProvider } from './DocumentProvider';
 import { MockDocumentProvider } from './MockDocumentProvider';
+import { HttpDocumentProvider } from './HttpDocumentProvider';
 
 /**
  * Registry for document providers
  *
  * This module provides a central place to manage the active document provider.
- * For now, it uses the MockDocumentProvider, but can be easily switched to
- * an HTTP-based provider or other implementations in the future.
+ * By default, it uses the HttpDocumentProvider with same-origin /api endpoint.
+ * Set VUE_APP_USE_MOCK_PROVIDER=true to use MockDocumentProvider instead.
  */
 
-// Initialize the active provider
-// In development/testing, we use the mock provider
-// In production, this would be replaced with an HTTP provider
-const activeProvider = new MockDocumentProvider();
+// Initialize the active provider based on environment
+const getDefaultProvider = (): DocumentProvider => {
+  // Use HTTP provider by default, unless explicitly set to use mock
+  const useMockProvider = process.env.VUE_APP_USE_MOCK_PROVIDER === 'true';
+
+  if (useMockProvider) {
+    return configureProvider({ mode: 'development' });
+  }
+
+  // Default to HTTP provider with same-origin /api path
+  const baseUrl = process.env.VUE_APP_API_BASE_URL ?? '/api';
+
+  return configureProvider({
+    mode: 'production',
+    baseUrl,
+  });
+};
+
+const activeProvider = getDefaultProvider();
 
 /**
  * The currently active document provider instance
@@ -28,29 +44,38 @@ export const documentProvider: DocumentProvider = activeProvider;
 export interface ProviderConfig {
   /** Environment mode - determines which provider to use */
   mode: 'development' | 'production' | 'test';
-  /** Optional base URL for HTTP providers */
+  /** Base URL for HTTP providers (required for production mode) */
   baseUrl?: string;
   /** Optional timeout in milliseconds for provider operations */
   timeout?: number;
+  /** Optional headers for HTTP providers */
+  headers?: Record<string, string>;
 }
 
 /**
  * Sets up the document provider based on configuration
- * This function is reserved for future use when HTTP providers are implemented
  */
 export function configureProvider(config: ProviderConfig): DocumentProvider {
-  // For now, always return the mock provider
-  // In the future, this will switch based on config.mode
   switch (config.mode) {
     case 'development':
     case 'test':
       return new MockDocumentProvider();
 
-    case 'production':
-      // TODO: Implement HTTP provider
-      // return new HttpDocumentProvider(config.baseUrl, config.timeout);
-      // For now, use mock provider in production as well
-      return new MockDocumentProvider();
+    case 'production': {
+      if (!config.baseUrl) {
+        throw new Error('baseUrl is required for production mode with HTTP provider');
+      }
+      const httpConfig: { baseUrl: string; timeout?: number; headers?: Record<string, string> } = {
+        baseUrl: config.baseUrl,
+      };
+      if (config.timeout !== undefined) {
+        httpConfig.timeout = config.timeout;
+      }
+      if (config.headers !== undefined) {
+        httpConfig.headers = config.headers;
+      }
+      return new HttpDocumentProvider(httpConfig);
+    }
 
     default:
       return new MockDocumentProvider();
@@ -71,4 +96,12 @@ export function getCurrentProvider(): DocumentProvider {
  */
 export function isMockProvider(provider: DocumentProvider): provider is MockDocumentProvider {
   return provider instanceof MockDocumentProvider;
+}
+
+/**
+ * Type guard to check if a provider is the HTTP implementation
+ * Useful for testing and conditional logic
+ */
+export function isHttpProvider(provider: DocumentProvider): provider is HttpDocumentProvider {
+  return provider instanceof HttpDocumentProvider;
 }
