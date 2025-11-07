@@ -131,8 +131,11 @@ git push && git push --tags
 
 ### Testing Strategy
 
-- **Current**: No test framework configured (`npm test` exits 0)
-- **Future**: Consider Vitest for unit tests, Cypress/Playwright for E2E
+- **Unit Tests**: Vitest for testing utilities, composables, and logic functions
+- **Component Tests**: Cypress for testing Vue components with Quasar integration
+- **E2E Tests**: Cypress for full application workflows (future consideration)
+- **Test Commands**: `npm test` (runs both unit and component), `npm run test:unit`, `npm run test:component`
+- **Component Test Pattern**: Follow `MainLayout.cy.ts` example using `cy.mount()` for component testing
 
 ## Key Implementation Notes
 

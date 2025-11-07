@@ -189,6 +189,40 @@ refactor(composables): Extract persona state logic from workspace
 
 ---
 
+## 🧪 Testing Architecture
+
+The application uses a **dual testing approach** combining unit and component tests:
+
+### Unit Testing (Vitest)
+
+- **Scope**: Utilities, composables, business logic, and pure functions
+- **Framework**: Vitest with jsdom environment for Vue component mounting
+- **Files**: `*.spec.ts` files alongside the code they test
+- **Examples**: `router/routes.spec.ts`, `i18n/index.spec.ts`
+
+### Component Testing (Cypress)
+
+- **Scope**: Vue components with Quasar integration and user interactions
+- **Framework**: Cypress component testing with proper Quasar setup
+- **Files**: `*.cy.ts` files in the same directory as components
+- **Pattern**: Use `cy.mount()` following `MainLayout.cy.ts` example
+- **Benefits**: Real browser environment, Quasar CSS/JS, full integration testing
+
+### Test Commands
+
+```bash
+npm test              # Run both unit and component tests
+npm run test:unit     # Vitest unit tests only
+npm run test:component # Cypress component tests only
+```
+
+### When to Use Which
+
+- **Unit Tests**: Logic validation, router configuration, i18n setup, utility functions
+- **Component Tests**: UI behavior, user interactions, component integration with Quasar
+
+---
+
 ## Release Flow
 
 ```
