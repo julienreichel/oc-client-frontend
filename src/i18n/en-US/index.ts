@@ -34,6 +34,7 @@ export default {
     },
     retry: 'Try Again',
     createdAt: 'Created on {date}',
+    backToHome: 'Enter New Code',
   },
 
   // 404 Not Found page

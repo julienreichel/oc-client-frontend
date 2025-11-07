@@ -49,4 +49,9 @@ describe('DocumentViewPage', () => {
   it('handles retry functionality', () => {
     cy.get('[data-cy="document-view-page"]').should('exist');
   });
+
+  it('displays back to home button', () => {
+    cy.get('[data-cy="back-to-home"]').should('exist');
+    cy.get('[data-cy="back-to-home"]').should('contain.text', 'Enter New Code');
+  });
 });

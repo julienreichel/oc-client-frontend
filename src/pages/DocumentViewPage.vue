@@ -1,6 +1,19 @@
 <template>
   <q-page data-cy="document-view-page" class="flex flex-center">
     <div class="q-pa-md" style="max-width: 800px; width: 100%">
+      <!-- Back to Home Button -->
+      <div class="q-mb-lg">
+        <q-btn
+          :to="{ name: 'access' }"
+          color="primary"
+          outline
+          icon="arrow_back"
+          :label="$t('document.backToHome')"
+          data-cy="back-to-home"
+          class="q-mb-md"
+        />
+      </div>
+
       <!-- Loading State -->
       <LoadingState v-if="state.loading.value" data-cy="loading-spinner" />
 
